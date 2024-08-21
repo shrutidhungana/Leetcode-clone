@@ -1,8 +1,9 @@
+import ProblemsTable from "@/components/ProblemsTable/ProblemsTable";
 import Topbar from "@/components/Topbar/Topbar";
 
 export default function Home() {
   return (
-    <main className="bg-dark-layer-2 min-h-3">
+    <main className="bg-dark-layer-2 min-h-screen">
       <Topbar />
       <h1 className="text-2xl text-center text-gray-700 dark:text-gray-400 font-medium uppercase mt-10 mb-5">
         &ldquo; QUALITY OVER QUANTITY &rdquo; 👇
@@ -30,6 +31,7 @@ export default function Home() {
               </th>
             </tr>
           </thead>
+          <ProblemsTable />
         </table>
       </div>
     </main>

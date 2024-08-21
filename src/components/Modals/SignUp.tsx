@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { authModalState } from "@/atoms/authModalAtom";
 import { useSetRecoilState } from "recoil";
 
@@ -9,9 +9,20 @@ const SignUp: React.FC<SignUpProps> = () => {
   const handleClick = () => {
     setAuthModalState((prev) => ({ ...prev, type: "login" }));
   };
+  const [inputs, setInputs] = useState({ email: '', displayName: '', password: '' });
+
+  const handleChangeInput = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setInputs((prev) => ({ ...prev, [e.target.name]: e.target.value }));
+  };
+
+  const handleRegister = (e: React.FormEvent<HTMLFormElement) => {
+    e.preventDefault();
+    console.log(inputs)
+}
+
   return (
     <>
-      <form className="space-y-6 px-6 py-4">
+      <form className="space-y-6 px-6 py-4" onSubmit={handleRegister}>
         <h3 className="text-xl font-medium text-white">
           Register to LeetClone
         </h3>
@@ -28,6 +39,7 @@ const SignUp: React.FC<SignUpProps> = () => {
             id="email"
             className="border-2 outline-none sm:text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 bg-gray-600 border-gray-500 placeholder-gray-400 text-white"
             placeholder="name@company.com"
+            onChange={handleChangeInput}
           />
         </div>
         <div>
@@ -43,6 +55,7 @@ const SignUp: React.FC<SignUpProps> = () => {
             id="displayName"
             className="border-2 outline-none sm:text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 bg-gray-600 border-gray-500 placeholder-gray-400 text-white"
             placeholder="John Doe"
+            onChange={handleChangeInput}
           />
         </div>
         <div>
@@ -58,6 +71,7 @@ const SignUp: React.FC<SignUpProps> = () => {
             id="password"
             className="border-2 outline-none sm:text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 bg-gray-600 border-gray-500 placeholder-gray-400 text-white"
             placeholder="*******"
+            onChange={handleChangeInput}
           />
         </div>
         <button

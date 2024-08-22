@@ -5,6 +5,7 @@ import { useSignInWithEmailAndPassword } from "react-firebase-hooks/auth";
 import { auth } from "@/firebase/firebase";
 import { useRouter } from "next/router";
 import { LuLoader2 } from "react-icons/lu";
+import { toast } from "react-toastify";
 
 type LoginProps = {};
 
@@ -36,13 +37,22 @@ const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
       if (!newUser) return;
       router.push("/");
     } catch (error: any) {
-     alert(error.message)
+      toast.error(error.message, {
+        position: "top-center",
+        autoClose: 3000,
+        theme: "dark",
+      });
     }
   };
 
-  useEffect(() => {
-  if (error) alert(error.message);
-},[error])
+ useEffect(() => {
+   if (error)
+     toast.error(error.message, {
+       position: "top-center",
+       autoClose: 3000,
+       theme: "dark",
+     });
+ }, [error]);
 
   return (
     <form className="space-y-6 px-6 py-4" onSubmit={handleLogin}>

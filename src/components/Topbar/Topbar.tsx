@@ -2,6 +2,7 @@ import React from "react";
 import Link from "next/link";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { auth } from "@/firebase/firebase";
+import Logout from "../Buttons/Logout";
 
 type TopbarProps = {};
 
@@ -43,13 +44,13 @@ const Topbar: React.FC<TopbarProps> = () => {
               />
               <div
                 className="absolute top-10 left-2/4 -translate-x-2/4  mx-auto bg-dark-layer-1 text-brand-orange p-2 rounded shadow-lg 
-								z-40 group-hover:scale-100 scale-0 
-								transition-all duration-300 ease-in-out"
+								z-40 group-hover:scale-100 scale-0 transition-all duration-300 ease-in-out"
               >
                 <p className="text-sm">{user.email}</p>
               </div>
             </div>
           )}
+          {user && <Logout />}
         </div>
       </div>
     </nav>

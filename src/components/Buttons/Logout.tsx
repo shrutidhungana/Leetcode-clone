@@ -2,6 +2,7 @@ import React from "react";
 import { auth } from "@/firebase/firebase";
 import { useSignOut } from "react-firebase-hooks/auth";
 import { FiLogOut } from "react-icons/fi";
+import { toast } from "react-toastify";
 
 type LogoutProps = {};
 
@@ -9,6 +10,11 @@ const Logout: React.FC<LogoutProps> = () => {
   const [signOut] = useSignOut(auth);
   const handleLogout = () => {
     signOut();
+    toast.success("Logged Out", {
+      position: "top-right",
+      autoClose: 3000,
+      theme: "dark",
+    });
   };
   return (
     <div className="cursor-pointer group relative">

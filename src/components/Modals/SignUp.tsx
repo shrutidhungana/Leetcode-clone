@@ -5,6 +5,7 @@ import { useCreateUserWithEmailAndPassword } from "react-firebase-hooks/auth";
 import { auth } from "@/firebase/firebase";
 import { useRouter } from "next/router";
 import { LuLoader2 } from "react-icons/lu";
+import { toast } from "react-toastify";
 
 type SignUpProps = {};
 
@@ -29,7 +30,11 @@ const router = useRouter();
   const handleRegister = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (!inputs.email || !inputs.password || !inputs.displayName)
-      return alert("Please fill all fields");
+      return toast.warning("Please fill all fields", {
+        position: "top-right",
+        autoClose: 3000,
+        theme: "dark",
+      });
     try {
       const newUser = await createUserWithEmailAndPassword(
         inputs.email,

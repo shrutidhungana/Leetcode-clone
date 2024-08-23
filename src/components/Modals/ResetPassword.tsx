@@ -13,7 +13,7 @@ const ResetPassword: React.FC<ResetPasswordProps> = () => {
     const success = await sendPasswordResetEmail(email);
     if (success) {
       toast.success("Password reset email sent", {
-        position: "top-center",
+        position: "top-right",
         autoClose: 3000,
         theme: "dark",
       });
@@ -23,7 +23,7 @@ const ResetPassword: React.FC<ResetPasswordProps> = () => {
   useEffect(() => {
     if (error) {
       toast.error(error.message, {
-        position: "top-center",
+        position: "top-right",
         autoClose: 3000,
         theme: "dark",
       });

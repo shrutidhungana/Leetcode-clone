@@ -28,7 +28,11 @@ const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
   const handleLogin = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (!inputs.email || !inputs.password)
-      return alert("Please fill all fields");
+      return toast.warning("Please fill all fields", {
+        position: "top-right",
+        autoClose: 3000,
+        theme: "dark",
+      });
     try {
       const newUser = await signInWithEmailAndPassword(
         inputs.email,
@@ -36,9 +40,14 @@ const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
       );
       if (!newUser) return;
       router.push("/");
+      toast.success("Logged In", {
+        position: "top-right",
+        autoClose: 3000,
+        theme: "dark",
+      });
     } catch (error: any) {
       toast.error(error.message, {
-        position: "top-center",
+        position: "top-right",
         autoClose: 3000,
         theme: "dark",
       });

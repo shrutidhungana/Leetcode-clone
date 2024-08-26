@@ -11,7 +11,7 @@ import Image from "next/image";
 
 type AuthPageProps = {};
 
-const AuthPage: React.FC<AuthPageProps> = ({}) => {
+const AuthPage: React.FC<AuthPageProps> = () => {
   const authModal = useRecoilValue(authModalState);
   const [user, loading] = useAuthState(auth);
   const [pageLoading, setPageLoading] = useState(true);

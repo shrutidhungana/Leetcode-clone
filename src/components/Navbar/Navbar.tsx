@@ -6,7 +6,7 @@ import Image from "next/image";
 
 type NavbarProps = {};
 
-const Navbar: React.FC<NavbarProps> = ({ }) => {
+const Navbar: React.FC<NavbarProps> = () => {
  const setAuthModalState =  useSetRecoilState(authModalState)
   const handleSignInButtonClick = () => {
     setAuthModalState((prev)=>({...prev, isOpen:true}))

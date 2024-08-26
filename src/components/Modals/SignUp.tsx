@@ -20,7 +20,7 @@ const SignUp: React.FC<SignUpProps> = () => {
     password: "",
   });
 const router = useRouter();
-  const [createUserWithEmailAndPassword, user, loading, error] =
+  const [createUserWithEmailAndPassword,, loading, error] =
     useCreateUserWithEmailAndPassword(auth);
 
   const handleChangeInput = (e: React.ChangeEvent<HTMLInputElement>) => {

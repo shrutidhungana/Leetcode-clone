@@ -1,4 +1,6 @@
 import React from 'react';
+import Split from "react-split";
+import ProblemDescription from './ProblemDescription/ProblemDescription';
 
 type WorkspaceProps = {
     
@@ -7,9 +9,10 @@ type WorkspaceProps = {
 const Workspace: React.FC<WorkspaceProps> = () => {
     
     return (
-        <div>
-            Have a good coding
-        </div>
+        <Split className="split" minSize={0}>
+            <ProblemDescription />
+            <div>The code Editor will be here</div>
+        </Split>
     );
 };
 export default Workspace;

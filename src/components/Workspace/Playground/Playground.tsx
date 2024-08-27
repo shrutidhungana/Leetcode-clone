@@ -9,6 +9,9 @@ import EditorFooter from "./EditorFooter/EditorFooter";
 type PlaygroundProps = {};
 
 const Playground: React.FC<PlaygroundProps> = () => {
+  const boilerPlate = `function twoSum(nums, target){
+  //Write your code here
+  };`;
   return (
     <div className="flex flex-col bg-dark-layer-1 relative overflow-x-hidden">
       <PreferenceNav />
@@ -22,7 +25,7 @@ const Playground: React.FC<PlaygroundProps> = () => {
           <CodeMirror
             theme={vscodeDark}
             extensions={[javascript()]}
-            value="const a=1;"
+            value={boilerPlate}
             style={{ fontSize: 16 }}
           />
         </div>

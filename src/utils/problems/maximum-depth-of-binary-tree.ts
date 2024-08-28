@@ -82,7 +82,7 @@ function maxDepth(root) {
   // Write your code here
 };`;
 
-export const maxDepthOfBinaryTree: Problem = {
+export const maximumDepthOfBinaryTree: Problem = {
   id: "maximum-depth-of-binary-tree",
   title: "8. Maximum Depth of Binary Tree",
   problemStatement: `<p class='mt-3'>Given the <code>root</code> of a binary tree, return <em>its maximum depth</em>.</p>

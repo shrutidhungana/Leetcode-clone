@@ -63,13 +63,13 @@ export const mergeIntervals: Problem = {
       id: 0,
       inputText: "intervals = [[1,3],[2,6],[8,10],[15,18]]",
       outputText: "[[1,6],[8,10],[15,18]]",
-      explanation: `<p class='mt-3'>Intervals <code>[1,3]</code> and <code>[2,6]</code> overlap, so they are merged into <code>[1,6]</code>.</p>`,
+      explanation: "Intervals [1,3] and [2,6] overlap, so they are merged into [1,6].",
     },
     {
       id: 1,
       inputText: "intervals = [[1,4],[4,5]]",
       outputText: "[[1,5]]",
-      explanation: `<p class='mt-3'>Intervals <code>[1,4]</code> and <code>[4,5]</code> are considered overlapping, so they are merged into <code>[1,5]</code>.</p>`,
+      explanation: "Intervals[1,4] and [4,5] are considered overlapping, so they are merged into [1,5].",
     },
   ],
   constraints: `<li class='mt-2'><code>1 <= intervals.length <= 10<sup>4</sup></code></li>

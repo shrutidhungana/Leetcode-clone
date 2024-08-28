@@ -42,13 +42,13 @@ export const bestTimeToBuyAndSellStock: Problem = {
       id: 0,
       inputText: "prices = [7,1,5,3,6,4]",
       outputText: "5",
-      explanation: `<p class='mt-3'>Buy on day 2 (price = 1) and sell on day 5 (price = 6). The maximum profit is <strong>6 - 1 = 5</strong>.</p>`,
+      explanation: "Buy on day 2 (price = 1) and sell on day 5 (price = 6). The maximum profit is 6 - 1 = 5.",
     },
     {
       id: 1,
       inputText: "prices = [7,6,4,3,1]",
       outputText: "0",
-      explanation: `<p class='mt-3'>In this case, no transactions are done and the max profit = <strong>0</strong>.</p>`,
+      explanation: "In this case, no transactions are done and the max profit = 0.",
     },
   ],
   constraints: `<li class='mt-2'><code>1 <= prices.length <= 10<sup>5</sup></code></li>

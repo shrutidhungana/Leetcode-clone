@@ -62,23 +62,23 @@ const ProblemDescription: React.FC<ProblemDescriptionProps> = ({problem}) => {
             {/* Examples */}
             <div className="mt-4">
               {problem?.examples?.map((example, index) => (
-                <div key={example.id}>
+                <div key={example?.id}>
                   <p className="font-medium text-white ">
                     Example {index + 1}:{" "}
                   </p>
-                  {example.img && (
+                  {example?.img && (
                     <img src={example.img} alt="" className="mt-3" />
                   )}
                   <div className="example-card">
                     <pre>
                       <strong className="text-white">Input: </strong>{" "}
-                      {example.inputText}
+                      {example?.inputText}
                       <br />
                       <strong>Output:</strong>
-                      {example.outputText} <br />
-                      {example.explanation && (
+                      {example?.outputText} <br />
+                      {example?.explanation && (
                         <>
-                          <strong>Explanation:</strong> {example.explanation}
+                          <strong>Explanation:</strong> {example?.explanation}
                         </>
                       )}
                     </pre>
@@ -88,22 +88,12 @@ const ProblemDescription: React.FC<ProblemDescriptionProps> = ({problem}) => {
             </div>
 
             {/* Constraints */}
-            <div className="my-5">
+            <div className="my-8 pb-4">
               <div className="text-white text-sm font-medium">Constraints:</div>
-              <ul className="text-white ml-5 list-disc">
-                <li className="mt-2">
-                  <code>2 ≤ nums.length ≤ 10</code>
-                </li>
-
-                <li className="mt-2">
-                  <code>-10 ≤ nums[i] ≤ 10</code>
-                </li>
-                <li className="mt-2">
-                  <code>-10 ≤ target ≤ 10</code>
-                </li>
-                <li className="mt-2 text-sm">
-                  <strong>Only one valid answer exists.</strong>
-                </li>
+              <ul className="text-white ml-5 list-disc ">
+                <div
+                  dangerouslySetInnerHTML={{ __html: problem.constraints }}
+                />
               </ul>
             </div>
           </div>

@@ -28,7 +28,7 @@ const ProblemsTable: React.FC<ProblemsTableProps> = ({
     videoId: "",
   });
   const problems = useGetProblems(setLoadingProblems);
-  const solvedProblems = useGetSolvedProblems();
+ 
   
   const closeModal = () => {
     setYoutubePlayer({ isOpen: false, videoId: "" });
@@ -46,7 +46,7 @@ const ProblemsTable: React.FC<ProblemsTableProps> = ({
   return (
     <>
       <tbody className="text-white">
-        {problems.map((problem, idx) => {
+        {problems?.map((problem, idx) => {
          let difficulyColor = "text-dark-pink"; // Default value
 
          if (problem.difficulty === "Easy") {
@@ -60,9 +60,9 @@ const ProblemsTable: React.FC<ProblemsTableProps> = ({
               key={problem.id}
             >
               <th className="px-2 py-4 font-medium whitespace-nowrap text-dark-green-s">
-                {solvedProblems?.includes(problem.id) && (
+               
                   <BsCheckCircle fontSize={"18"} width="18" />
-                )}
+                
               </th>
               <td className="px-6 py-4">
                 {problem.link ? (
@@ -155,8 +155,8 @@ function useGetProblems(
       );
       const querySnapshot = await getDocs(q);
       const tmp: DBProblem[] = [];
-      querySnapshot.forEach((doc) => {
-        tmp.push({ id: doc.id, ...doc.data() } as DBProblem);
+      querySnapshot?.forEach((doc) => {
+        tmp?.push({ id: doc?.id, ...doc?.data() } as DBProblem);
       });
       setProblems(tmp);
       setLoadingProblems(false);
@@ -167,23 +167,4 @@ function useGetProblems(
   return problems;
 };
 
-function useGetSolvedProblems() {
-  const [solvedProblems, setSolvedProblems] = useState<string[]>([]);
-  const [user] = useAuthState(auth);
 
-  useEffect(() => {
-    const getSolvedProblems = async () => {
-      const userRef = doc(firestore, "users", user!.uid);
-      const userDoc = await getDoc(userRef);
-
-      if (userDoc.exists()) {
-        setSolvedProblems(userDoc.data().solvedProblems);
-      }
-    };
-
-    if (user) getSolvedProblems();
-    if (!user) setSolvedProblems([]);
-  }, [user]);
-
-  return solvedProblems;
-};

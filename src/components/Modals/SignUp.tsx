@@ -2,10 +2,11 @@ import React, { useEffect, useState } from "react";
 import { authModalState } from "@/atoms/authModalAtom";
 import { useSetRecoilState } from "recoil";
 import { useCreateUserWithEmailAndPassword } from "react-firebase-hooks/auth";
-import { auth } from "@/firebase/firebase";
+import { auth, firestore } from "@/firebase/firebase";
 import { useRouter } from "next/router";
 import { LuLoader2 } from "react-icons/lu";
 import { toast } from "react-toastify";
+import { doc, setDoc } from "firebase/firestore";
 
 type SignUpProps = {};
 
@@ -36,19 +37,53 @@ const router = useRouter();
         theme: "dark",
       });
     try {
+      toast.loading("Creating your account", {
+        position: "top-right",
+        toastId: "loadingToast",
+        theme: "dark",
+      });
       const newUser = await createUserWithEmailAndPassword(
         inputs.email,
         inputs.password
       );
       router.push("/");
       if (!newUser) return;
+      const userData = {
+        uid: newUser.user.uid,
+        email: newUser.user.email,
+        displayName: inputs.displayName,
+        createdAt: Date.now(),
+        updatedAt: Date.now(),
+        likedProblems: [],
+        dislikedProblems: [],
+        solvedProblems: [],
+        starredProblems: [],
+      };
+      await setDoc(doc(firestore, "users", newUser.user.uid), userData);
+      toast.success("Successfully created new user", {
+        position: "top-right",
+        autoClose: 3000,
+        theme: "dark",
+      });
     } catch (error: any) {
-      alert(error.message);
+      toast.error(error.message, {
+        position: "top-right",
+        autoClose: 3000,
+        theme: "dark",
+      });
+    } finally {
+      toast.dismiss("loadingToast");
     }
   };
 
   useEffect(() => {
-    if (error) alert(error.message);
+    if (error) {
+       toast.error(error.message, {
+         position: "top-right",
+         autoClose: 3000,
+         theme: "dark",
+       });
+    };
   }, [error]);
 
   return (

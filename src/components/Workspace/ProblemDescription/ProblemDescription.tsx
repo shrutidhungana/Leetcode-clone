@@ -13,6 +13,7 @@ import {
   AiFillLike,
   AiFillDislike,
   AiOutlineLoading3Quarters,
+  AiFillStar,
 } from "react-icons/ai";
 import { BsCheck2Circle } from "react-icons/bs";
 import { TiStarOutline } from "react-icons/ti";
@@ -275,7 +276,13 @@ const ProblemDescription: React.FC<ProblemDescriptionProps> = ({ problem }) => {
                 text-dark-gray-6"
                   onClick={handleStar}
                 >
-                  <TiStarOutline />
+                  {starred && !updating && (
+                    <AiFillStar className="text-dark-yellow" />
+                  )}
+                  {!starred && !updating && <TiStarOutline />}
+                  {updating && (
+                    <AiOutlineLoading3Quarters className="animate-spin" />
+                  )}
                 </button>
               </div>
             )}

@@ -2,7 +2,11 @@ import { auth, firestore } from "@/firebase/firebase";
 import { DBProblem, Problem } from "@/utils/types/problem";
 import { doc, getDoc, runTransaction } from "firebase/firestore";
 import { useEffect, useState } from "react";
-import { AiFillLike, AiFillDislike, AiOutlineLoading3Quarters } from "react-icons/ai";
+import {
+  AiFillLike,
+  AiFillDislike,
+  AiOutlineLoading3Quarters,
+} from "react-icons/ai";
 import { BsCheck2Circle } from "react-icons/bs";
 import { TiStarOutline } from "react-icons/ti";
 import CircleSkeleton from "@/components/Skeletons/CircleSkeleton/CircleSkeleton";
@@ -106,6 +110,69 @@ const ProblemDescription: React.FC<ProblemDescriptionProps> = ({ problem }) => {
     setUpdating(false);
   };
 
+ const handleDislike = async () => {
+   if (!user) {
+     toast.error("You must be logged in to dislike a problem", {
+       position: "top-right",
+       theme: "dark",
+       autoClose: 3000,
+     });
+     return;
+   }
+   if (updating) return;
+   setUpdating(true);
+   await runTransaction(firestore, async (transaction) => {
+     const { problemDoc, userDoc, problemRef, userRef } =
+       await returnUserDataAndProblemData(transaction);
+     if (userDoc.exists() && problemDoc.exists()) {
+       // already disliked, already liked, not disliked or liked
+       if (disliked) {
+         transaction.update(userRef, {
+           dislikedProblems: userDoc
+             .data()
+             .dislikedProblems.filter((id: string) => id !== problem.id),
+         });
+         transaction.update(problemRef, {
+           dislikes: problemDoc.data().dislikes - 1,
+         });
+         setCurrentProblem((prev) =>
+           prev ? { ...prev, dislikes: prev.dislikes - 1 } : null
+         );
+         setData((prev) => ({ ...prev, disliked: false }));
+       } else if (liked) {
+         transaction.update(userRef, {
+           dislikedProblems: [...userDoc.data().dislikedProblems, problem.id],
+           likedProblems: userDoc
+             .data()
+             .likedProblems.filter((id: string) => id !== problem.id),
+         });
+         transaction.update(problemRef, {
+           dislikes: problemDoc.data().dislikes + 1,
+           likes: problemDoc.data().likes - 1,
+         });
+         setCurrentProblem((prev) =>
+           prev
+             ? { ...prev, dislikes: prev.dislikes + 1, likes: prev.likes - 1 }
+             : null
+         );
+         setData((prev) => ({ ...prev, disliked: true, liked: false }));
+       } else {
+         transaction.update(userRef, {
+           dislikedProblems: [...userDoc.data().dislikedProblems, problem.id],
+         });
+         transaction.update(problemRef, {
+           dislikes: problemDoc.data().dislikes + 1,
+         });
+         setCurrentProblem((prev) =>
+           prev ? { ...prev, dislikes: prev.dislikes + 1 } : null
+         );
+         setData((prev) => ({ ...prev, disliked: true }));
+       }
+     }
+   });
+   setUpdating(false);
+ };
+
   return (
     <div className="bg-dark-layer-1">
       {/* TAB */}
@@ -153,13 +220,20 @@ const ProblemDescription: React.FC<ProblemDescriptionProps> = ({ problem }) => {
 
                   <span className="text-xs">{currentProblem?.likes}</span>
                 </button>
-                <div
+                <button
                   className="flex items-center cursor-pointer hover:bg-dark-fill-3 space-x-1 rounded p-[3px]  ml-4 text-lg transition-colors duration-200 
                 text-green-s text-dark-gray-6"
+                  onClick={handleDislike}
                 >
-                  <AiFillDislike />
+                  {disliked && !updating && (
+                    <AiFillDislike className="text-dark-blue-s" />
+                  )}
+                  {!disliked && !updating && <AiFillDislike />}
+                  {updating && (
+                    <AiOutlineLoading3Quarters className="animate-spin" />
+                  )}
                   <span className="text-xs">{currentProblem?.dislikes}</span>
-                </div>
+                </button>
                 <div
                   className="cursor-pointer hover:bg-dark-fill-3  rounded p-[3px]  ml-4 text-xl transition-colors duration-200 text-green-s 
                 text-dark-gray-6 "

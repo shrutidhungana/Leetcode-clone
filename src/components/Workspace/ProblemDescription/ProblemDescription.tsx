@@ -5,6 +5,8 @@ import { useEffect, useState } from "react";
 import { AiFillLike, AiFillDislike } from "react-icons/ai";
 import { BsCheck2Circle } from "react-icons/bs";
 import { TiStarOutline } from "react-icons/ti";
+import CircleSkeleton from "@/components/Skeletons/CircleSkeleton/CircleSkeleton";
+import RectangleSkeleton from "@/components/Skeletons/RectangleSkeleton/RectangleSkeleton";
 
 type ProblemDescriptionProps = {
   problem: Problem;
@@ -47,15 +49,25 @@ const ProblemDescription: React.FC<ProblemDescriptionProps> = ({ problem }) => {
                 </div>
                 <div className="flex items-center cursor-pointer hover:bg-dark-fill-3 space-x-1 rounded p-[3px]  ml-4 text-lg transition-colors duration-200 text-dark-gray-6">
                   <AiFillLike />
-                  <span className="text-xs">{currentProblem?.likes }</span>
+                  <span className="text-xs">{currentProblem?.likes}</span>
                 </div>
                 <div className="flex items-center cursor-pointer hover:bg-dark-fill-3 space-x-1 rounded p-[3px]  ml-4 text-lg transition-colors duration-200 text-green-s text-dark-gray-6">
                   <AiFillDislike />
-                  <span className="text-xs">{currentProblem?.dislikes }</span>
+                  <span className="text-xs">{currentProblem?.dislikes}</span>
                 </div>
                 <div className="cursor-pointer hover:bg-dark-fill-3  rounded p-[3px]  ml-4 text-xl transition-colors duration-200 text-green-s text-dark-gray-6 ">
                   <TiStarOutline />
                 </div>
+              </div>
+            )}
+
+            {loading && (
+              <div className="mt-3 flex space-x-2">
+                <RectangleSkeleton />
+                <CircleSkeleton />
+                <RectangleSkeleton />
+                <RectangleSkeleton />
+                <CircleSkeleton />
               </div>
             )}
 

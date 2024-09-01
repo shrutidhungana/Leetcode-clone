@@ -2,7 +2,7 @@ import { auth, firestore } from "@/firebase/firebase";
 import { DBProblem, Problem } from "@/utils/types/problem";
 import { doc, getDoc, runTransaction } from "firebase/firestore";
 import { useEffect, useState } from "react";
-import { AiFillLike, AiFillDislike } from "react-icons/ai";
+import { AiFillLike, AiFillDislike, AiOutlineLoading3Quarters } from "react-icons/ai";
 import { BsCheck2Circle } from "react-icons/bs";
 import { TiStarOutline } from "react-icons/ti";
 import CircleSkeleton from "@/components/Skeletons/CircleSkeleton/CircleSkeleton";
@@ -22,8 +22,8 @@ const ProblemDescription: React.FC<ProblemDescriptionProps> = ({ problem }) => {
 
   const { liked, disliked, solved, setData, starred } =
     useGetUsersDataOnProblem(problem?.id);
-  
-  
+  const [updating, setUpdating] = useState(false);
+
   const returnUserDataAndProblemData = async (transaction: any) => {
     const userRef = doc(firestore, "users", user!.uid);
     const problemRef = doc(firestore, "problems", problem.id);
@@ -32,77 +32,79 @@ const ProblemDescription: React.FC<ProblemDescriptionProps> = ({ problem }) => {
     return { userDoc, problemDoc, userRef, problemRef };
   };
 
- const handleLike = async () => {
-   if (!user) {
-     toast.error("You must be logged in to like a problem", {
-       position: "top-right",
-       theme: "dark",
-       autoClose: 3000,
-     });
-     return;
-   }
+  const handleLike = async () => {
+    if (!user) {
+      toast.error("You must be logged in to like a problem", {
+        position: "top-right",
+        theme: "dark",
+        autoClose: 3000,
+      });
+      return;
+    }
+    if (updating) return;
+    setUpdating(true);
+    await runTransaction(firestore, async (transaction) => {
+      const { problemDoc, userDoc, problemRef, userRef } =
+        await returnUserDataAndProblemData(transaction);
 
-   await runTransaction(firestore, async (transaction) => {
-     const { problemDoc, userDoc, problemRef, userRef } =
-       await returnUserDataAndProblemData(transaction);
+      if (userDoc.exists() && problemDoc.exists()) {
+        const currentLikes = problemDoc.data().likes || 0;
+        const currentDislikes = problemDoc.data().dislikes || 0;
 
-     if (userDoc.exists() && problemDoc.exists()) {
-       const currentLikes = problemDoc.data().likes || 0;
-       const currentDislikes = problemDoc.data().dislikes || 0;
+        if (liked) {
+          if (currentLikes > 0) {
+            transaction.update(userRef, {
+              likedProblems: userDoc
+                .data()
+                .likedProblems.filter((id: string) => id !== problem.id),
+            });
+            transaction.update(problemRef, {
+              likes: currentLikes - 1,
+            });
 
-       if (liked) {
-         if (currentLikes > 0) {
-           transaction.update(userRef, {
-             likedProblems: userDoc
-               .data()
-               .likedProblems.filter((id: string) => id !== problem.id),
-           });
-           transaction.update(problemRef, {
-             likes: currentLikes - 1,
-           });
+            setCurrentProblem((prev) =>
+              prev ? { ...prev, likes: prev.likes - 1 } : null
+            );
+            setData((prev) => ({ ...prev, liked: false }));
+          }
+        } else if (disliked) {
+          transaction.update(userRef, {
+            likedProblems: [...userDoc.data().likedProblems, problem?.id],
+            dislikedProblems: userDoc
+              .data()
+              .dislikedProblems.filter((id: string) => id !== problem?.id),
+          });
+          transaction.update(problemRef, {
+            likes: currentLikes + 1,
+            dislikes: currentDislikes > 0 ? currentDislikes - 1 : 0,
+          });
 
-           setCurrentProblem((prev) =>
-             prev ? { ...prev, likes: prev.likes - 1 } : null
-           );
-           setData((prev) => ({ ...prev, liked: false }));
-         }
-       } else if (disliked) {
-         transaction.update(userRef, {
-           likedProblems: [...userDoc.data().likedProblems, problem.id],
-           dislikedProblems: userDoc
-             .data()
-             .dislikedProblems.filter((id: string) => id !== problem.id),
-         });
-         transaction.update(problemRef, {
-           likes: currentLikes + 1,
-           dislikes: currentDislikes > 0 ? currentDislikes - 1 : 0,
-         });
-
-         setCurrentProblem((prev) =>
-           prev
-             ? {
-                 ...prev,
-                 likes: prev.likes + 1,
-                 dislikes: prev.dislikes > 0 ? prev.dislikes - 1 : 0,
-               }
-             : null
-         );
-         setData((prev) => ({ ...prev, liked: true, disliked: false }));
-       } else {
-         transaction.update(userRef, {
-           likedProblems: [...userDoc.data().likedProblems, problem.id],
-         });
-         transaction.update(problemRef, {
-           likes: currentLikes + 1,
-         });
-         setCurrentProblem((prev) =>
-           prev ? { ...prev, likes: prev.likes + 1 } : null
-         );
-         setData((prev) => ({ ...prev, liked: true }));
-       }
-     }
-   });
- };
+          setCurrentProblem((prev) =>
+            prev
+              ? {
+                  ...prev,
+                  likes: prev.likes + 1,
+                  dislikes: prev.dislikes > 0 ? prev.dislikes - 1 : 0,
+                }
+              : null
+          );
+          setData((prev) => ({ ...prev, liked: true, disliked: false }));
+        } else {
+          transaction.update(userRef, {
+            likedProblems: [...userDoc.data().likedProblems, problem.id],
+          });
+          transaction.update(problemRef, {
+            likes: currentLikes + 1,
+          });
+          setCurrentProblem((prev) =>
+            prev ? { ...prev, likes: prev.likes + 1 } : null
+          );
+          setData((prev) => ({ ...prev, liked: true }));
+        }
+      }
+    });
+    setUpdating(false);
+  };
 
   return (
     <div className="bg-dark-layer-1">
@@ -141,11 +143,14 @@ const ProblemDescription: React.FC<ProblemDescriptionProps> = ({ problem }) => {
                 transition-colors duration-200 text-dark-gray-6"
                   onClick={handleLike}
                 >
-                  {liked ? (
+                  {liked && !updating && (
                     <AiFillLike className="text-dark-blue-s" />
-                  ) : (
-                    <AiFillLike />
                   )}
+                  {!liked && !updating && <AiFillLike />}
+                  {updating && (
+                    <AiOutlineLoading3Quarters className="animate-spin" />
+                  )}
+
                   <span className="text-xs">{currentProblem?.likes}</span>
                 </button>
                 <div

@@ -17,7 +17,7 @@ const Workspace: React.FC<WorkspaceProps> = ({ problem }) => {
     <Split className="split" minSize={0}>
       <ProblemDescription problem={problem} />
       <div className="bg-dark-fill-2">
-        <Playground problem={problem} />
+        <Playground problem={problem} setSuccess={setSuccess} />
         {success && (
           <Confetti
             gravity={0.3}

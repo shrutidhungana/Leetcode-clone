@@ -1,30 +1,19 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+#LeetcodeClone
 
-## Getting Started
+This is a clone of Leetcode. The homepage shows 10 of the Leet code problems, and clicking each problem will take you to the code editor for that problem. 
+The problem description is on one side and a code editor is on the other. 
 
-First, run the development server:
+Problem Description (Left Side): 
 
-```bash
-npm run dev
-# or
-yarn dev
-```
+In this part, the title of the Problem is given, and then it is given a category(easy, medium, difficult). You can also like or dislike it or star it as favorite. Below them are  some examples of how to solve it.
+Also some constraints are given about what to do.
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Code Editor (Right Side):
 
-You can start editing the page by modifying `pages/index.js`. The page auto-updates as you edit the file.
+In this part, Language by how you can solve it is given. Below it is code editor to solve the problem. Then, comes test cases and finally the button to run and submit the code in bottom. If the test cases is successful a confetti is shown.
 
-## Learn More
+And in the homepageobarked with a tick.
 
-To learn more about Next.js, take a look at the following resources:
+To know more about the website you can visit the link:
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/import?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+https://leetcode-clone-ashen.vercel.app

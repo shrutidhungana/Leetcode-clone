@@ -1,4 +1,4 @@
-#LeetcodeClone
+##LeetcodeClone
 
 This is a clone of Leetcode. The homepage shows 10 of the Leet code problems, and clicking each problem will take you to the code editor for that problem. 
 The problem description is on one side and a code editor is on the other. 

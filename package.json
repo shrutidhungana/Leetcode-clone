@@ -1,13 +1,10 @@
 {
   "name": "leetcode-clone",
   "version": "0.1.0",
-  "homepage": "https://shrutidhungana.github.io/leetcode-clone",
   "private": true,
   "scripts": {
-    "predeploy": "npm run build",
-    "deploy": "gh-pages -d out",
     "dev": "next dev",
-    "build": "next build && next export",
+    "build": "next build",
     "start": "next start"
   },
   "dependencies": {
@@ -34,7 +31,6 @@
   },
   "devDependencies": {
     "autoprefixer": "^10.4.20",
-    "gh-pages": "^6.2.0",
     "postcss": "^8.4.41",
     "tailwindcss": "^3.4.10"
   }
